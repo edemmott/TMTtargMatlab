@@ -5,7 +5,7 @@
 * targXcal : generates Xcalibur targeting lists
 * targMql  : generates MaxQuant.Live targeting lists
 
-**Please note:** that these functions are designed for generating targeting lists for TMT-based data from maxquant evidence.txt files. The mass and m/z columns in the evidence file omit the mass of the TMT reporter. These functions correct for this, but as a result are not suitable for label-free or SILAC-based inclusion list generation.
+**Please note:** that these functions are designed for generating targeting lists for **TMT-based** data from maxquant evidence.txt files. The mass and m/z columns in the evidence file omit the mass of the TMT reporter. These functions correct for this, but as a result are **not suitable for label-free or SILAC-based** inclusion list generation.
 
 These functions have been tested on Windows 10, and Max OS X and Matlab versions R2017b and R2018a. Maxquant v1.6.0.16 was used for generating evidence.txt files. Output files were tested with Xcalibur v4.1.31.9 and Maxquant.live v1.0
 
