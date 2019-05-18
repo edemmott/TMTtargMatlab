@@ -1,7 +1,9 @@
 # TMTtargMatlab
-Matlab functions for generating targeting lists for Xcalibur or Maxquant.Live from Maxquant evidence.txt files
+Matlab functions for generating targeting/inclusion lists for Xcalibur or Maxquant.Live from Maxquant evidence.txt files
 
 These functions have been tested on Windows 10, and Max OS X and Matlab versions R2017b and R2018a.
+
+*Note that although the **targXcal** function is used for all the examples below, the input and output arguments and use of the **targMql** function is identical.*
 
 ## Basic use
 ```matlab
@@ -28,6 +30,9 @@ The function can optionally output the table of targets generated that is used t
 % Output table
 outputTable = targXcal( data , 'filename.csv');
 ```
+
+## Example function calls for different filtering requirements
+
 
 
 Created: Ed Emmott, Northeastern University, Boston, MA, USA May 2019.
