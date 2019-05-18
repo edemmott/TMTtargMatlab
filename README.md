@@ -74,7 +74,7 @@ outputTable = targXcal( data , 'filename.csv');
 % To set these to 2,4 and 1 respectively:
   targXcal( data , 'filename.csv' , 2 , 4 , 1);
   
-% 2. These can be used as name-value pairs:
+% 2. These can be used as name-value pairs in any order:
   targXcal( data , 'filename.csv' , 'rtWidth' , 2 , 'mzDecimals' , 4 , 'rtWidth' , 1);
 
 ```
