@@ -29,7 +29,18 @@ The function has been written on the basis that after importing the evidence.txt
 By default, the function removes peptides identified as contaminants or reverse database hits ('FilterRevCon', true). It also selects for unique peptide sequence/charge state combinations. If multiple entries for the same sequence/charge state are identified, the function selects the entry with the highest intensity ('Unique', true).
 
 ## Optional input arguments
+* **rtWidth**    : Retention time window, +/- X minutes. **Default = 3**.
+* **mzDecimals** : m/z decimal places. **Default = 5**.
+* **rtDecimals** : Retention time decimal places. **Default 2**.
 
+Name/value pair input parameters:
+* **'FilterConRev'** : Remove entries identified by maxquant as contaminants, or reverse database hits. **Default: True**.
+* **'PEP'**          : Remove entries not meeting this PEP threshold. **Default: 1** (no filter applied).
+* **'Score'**        : Remove entries not meeting this Score threshold. **Default: 0** (no filter applied).
+* **'Intensity'**    : Remove entries not meeting this Intensity threshold. **Default: 0** (no filter applied).
+* **'Unique'**       : Remove entries sharing both sequence and charge state, keeping the most intense. **Default: true**.
+* **'Include'**      : Include only entries matching with accession numbers matching those provided in user-provided cell array. **Default: false**.
+* **'Exclude'**      : Exclude entries matching with accession numbers matching those provided in user-provided cell array. If both 'Include' and 'Exclude' options are used, 'Include' is applied first **Default: false**.
 
 ## Optional output arguments
 The function can optionally output the table of targets generated that is used to create the inclusion list.csv file.
