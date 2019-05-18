@@ -58,7 +58,8 @@ outputTable = targXcal( data , 'filename.csv');
 % Create cell array with target accession numbers
   accessions = {'A6NKH3';'P05386';'P05386-2';'P05387'};
 
-% Create inclusion list, apply Score threshold of 50, and select only peptides with accession numbers matching 'accessions'/
+% Create inclusion list, apply Score threshold of 50, and select only peptides with accession 
+% numbers matching 'accessions'/
   targXcal( data , 'filename.csv','Score',50,'Include',accessions);
 ```
 #### Generate output table, and do not remove Reverse or Contaminant hits.
@@ -69,7 +70,8 @@ outputTable = targXcal( data , 'filename.csv');
 ```matlab
 % There are two ways to do this:
 
-% 1. rtWidth, mzDecimals and rtDecimals are positional arguments in that order. To set these to 2,4 and 1 respectively:
+% 1. rtWidth, mzDecimals and rtDecimals are positional arguments in that order. 
+% To set these to 2,4 and 1 respectively:
   targXcal( data , 'filename.csv' , 2 , 4 , 1);
   
 % 2. These can be used as name-value pairs:
