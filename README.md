@@ -97,8 +97,10 @@ This should populate the inclusion list. Hit done.
 MaxQuant.Live does not provide a means of directly importing the targeting data. Instead, open the generated **filename.csv** in spreadsheet software, and copy/paste the columns into MaxQuant.Live.
 ##### Step 1, open the inclusion list file in spreadsheet software e.g. Excel, Open Office, and select and copy the columns
 ![Select and copy columns](/img/mql_incl_1.PNG)
-##### Step 2, open the targeting app in MaxQuant.Live, use the 'Paste button to populate the targeting list
+##### Step 2, open the targeting app in MaxQuant.Live, use the 'Paste' button to populate the targeting list
 ![Paste targeting list into Maxquant.live](/img/mql_incl_2.PNG)
+
+
 
 Created: Ed Emmott, Northeastern University, Boston, MA, USA May 2019.
 
