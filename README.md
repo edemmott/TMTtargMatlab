@@ -34,6 +34,8 @@ The function has been written on the basis that after importing the evidence.txt
 * **mzDecimals** : m/z decimal places. **Default = 5**.
 * **rtDecimals** : Retention time decimal places. **Default 2**.
 
+**Note**: rtWidth is used to define retention length in targMql, the default is different and instead set at 1 minute.
+
 Name/value pair input parameters:
 * **'FilterConRev'** : Remove entries identified by maxquant as contaminants, or reverse database hits. **Default: True**.
 * **'PEP'**          : Remove entries not meeting this PEP threshold. **Default: 1** (no filter applied).
