@@ -39,9 +39,12 @@ Name/value pair input parameters:
 * **'PEP'**          : Remove entries not meeting this PEP threshold. **Default: 1** (no filter applied).
 * **'Score'**        : Remove entries not meeting this Score threshold. **Default: 0** (no filter applied).
 * **'Intensity'**    : Remove entries not meeting this Intensity threshold. **Default: 0** (no filter applied).
+* **'RTshift'**      : Subtract this value (in minutes) from all retention times (see note). **Default: 0**.
 * **'Unique'**       : Remove entries sharing both sequence and charge state, keeping the most intense. **Default: true**.
 * **'Include'**      : Include only entries matching with accession numbers matching those provided in user-provided cell array. **Default: false**.
 * **'Exclude'**      : Exclude entries matching with accession numbers matching those provided in user-provided cell array. If both 'Include' and 'Exclude' options are used, 'Include' is applied first **Default: false**.
+
+**Note**: *'RTshift* is useful in a special case involving *MaxQuant.Live*. MaxQuant.Live calculates retention times based on the time since MaxQuant.Live took control of the instrument run method, not from the beginning the run method itself. In the special case where control is transferred to Maxquant.Live by magic-scan mid-run (e.g. 20 minutes in), this delay should be provided by the RTshift parameter to correct for this (in this example: 'RTshift', 20).
 
 ## Optional output arguments
 The function can optionally output the table of targets generated that is used to create the inclusion list.csv file.
