@@ -76,6 +76,8 @@ if strcmp(filename(end-3:end) , '.csv') == 0
 end
 
 %% Handling different input data formats (table, structure, and columns); 
+% Note: if the spelling or capitalisation of the imported columns changes,
+% these will require modification in this section.
     % Col Checker function
     isTableCol = @(t, thisCol) ismember(thisCol, t.Properties.VariableNames);
 
@@ -88,7 +90,8 @@ end
         data2.z = data.z; %
         data2.Mass = data.Mass; %
         data2.RT = data.RT; %
-        %data2.Score = data.Score; % score column not typically imported
+        %data2.Score = data.Score; % score column not typically imported by
+        % perl script
         data2.Intensity = data.Intensity; %
                
     end
@@ -192,10 +195,13 @@ end
     % Calculate theoretical m/z from mass, z and numTMT.
     % adds the mass, number of protons corresponding to z, number of TMT tags
     % for the peptide, and then divides everything by the charge.
+    % NOTE: if wishing to use this function for non-TMT data: this is this
+    % section that will require modification.
     targets.theoMz   = (targets.mass + (targets.z*1.007276) +...
         (targets.numTMT.*229.162932)) ./ targets.z;
     targets.theoMz = round(targets.theoMz , p.Results.mzDecimals);
 
+    
     % Start end end time
     targets.startRT = round(targets.RT - p.Results.rtWidth , p.Results.rtDecimals);
     targets.endRT   = round(targets.RT + p.Results.rtWidth , p.Results.rtDecimals);
