@@ -1,10 +1,10 @@
-% targXcal: xcalibur TMT targeting list script for generating inclusion 
+% targMql: MaxQuant.Live TMT targeting list script for generating inclusion 
 % lists from MaxQuant evidence.txt files. These can be directly loaded into
 % xCalibur. Note that this function is designed for TMT data ONLY as it 
 % adds TMT reporter masses to the mass when calculating m/z.
 %
 % example minimal function call:
-%       targXcal(data,'filename')
+%       targMql(data,'filename')
 %
 % Where:
 %       data = the maxquant evidence.txt imported as a structure or table
@@ -21,7 +21,10 @@
 %
 % Ed Emmott, Northeastern U. 2019.
 
-function [targets] = targXcal(data,filename,varargin)
+% TODO: Expand to permit variable retention lengths. Currently defaults to
+% 1.
+
+function [targets] = targMql(data,filename,varargin)
 
 % Input parameter validity checks and defaults
 p = inputParser;
@@ -31,8 +34,11 @@ validData = @(x) isstruct(x) | istable(x); % data must be a structure or table
 validPEP  = @(x) isnumeric(x) & x >= 0 & x <= 1; % PEP must be a number between 0 and 1.
 
 % list defaults
+% Note defaults and behavior are identical to targXcal, with the exception
+% of RTwidth which is used to define retention length, instead of the
+% +/- retention time window and has a shorted default of 1 minute.
 % Optional Positional parameters
-dRTwidth    = 3;  % Default: +/- 3 minute retention time window per peptide
+dRTwidth    = 1;  % Default: 1 minute retention length (DIFFERENT TO targXcal)
 dMZdecimals = 5;  % Default: gives ion m/z to 5dp
 dRTdecimals = 2;  % Default: gives retention time in minutes to 1dp
 
@@ -200,58 +206,52 @@ end
     targets.theoMz   = (targets.mass + (targets.z*1.007276) +...
         (targets.numTMT.*229.162932)) ./ targets.z;
     targets.theoMz = round(targets.theoMz , p.Results.mzDecimals);
-
     
-    % Start end end time
-    targets.startRT = round(targets.RT - p.Results.rtWidth , p.Results.rtDecimals);
-    targets.endRT   = round(targets.RT + p.Results.rtWidth , p.Results.rtDecimals);
+    % Calculate theoretical mass - this is the value used by MaxQuant.Live,
+    % not theoMz
+    targets.theoMass = ((targets.theoMz - 1.007276).*targets.z);
+    targets.theoMass = round(targets.theoMass , p.Results.mzDecimals); % Apply mzDecimals rounding
 
-    %% xCalibur-formating
-    % Make matrix containing the relevent numeric values
-    xcal = [targets.theoMz , targets.z , targets.startRT , targets.endRT ];
-    
-    % Generate cell array containing sequence and intensity to include in
-    % the comments box for DO-MS plugin
-    for ii = 1:numel(targets.int)
-        comment{ii,1} = [targets.sequences{ii},';',num2str(targets.int(ii))];
+    %RT start and end time not used by MaxQuant.Live, instead Retention
+    %length is used. This goes off the RTwidth column.
+%     % Start end end time
+%     targets.startRT = round(targets.RT - p.Results.rtWidth , p.Results.rtDecimals);
+%     targets.endRT   = round(targets.RT + p.Results.rtWidth , p.Results.rtDecimals);
+
+    %% MaxQuant.Live-formating
+
+    mqLive = [targets.theoMass , targets.z , targets.RT ]; % Note MQ.live wants MASS not m/z
+    % Add retention length column (defaults to 1)
+    for ii = 1:numel(targets.z)
+        mqLive(ii,4) = p.Results.rtWidth; % 
     end
-
+    mqLive = [mqLive , targets.int]; % Add Intensity column
+    
+    nanInt = targets.int == NaN;
+    mqLive(nanInt,4) = 1; % sets minimum intensity to 1 instead of NaN;
+    
     % Reorder data by retention time start
-    [~ , idx] = sort(xcal(:,3) , 'ascend');
-    xcal = xcal(idx,:);
-    comment = comment(idx);
+    [~ , idx] = sort(mqLive(:,3) , 'ascend');
+    mqLive = mqLive(idx,:);
     targets = targets(idx,:);
     
-    
-    % Output format
-    formatString = ['%.',num2str(p.Results.mzDecimals),'f,,,,%g,Positive,%.',...
-        num2str(p.Results.rtDecimals),'f,%.',num2str(p.Results.rtDecimals),...
-        'f,,,,%s,\n'];
+    % Add ID column
+    id = 1:1:numel(mqLive(:,1));
+
+    formatStringMQL = ['%f,%s,%f,%g,%f,%g,%g,TRUE,TRUE,\n']; % Make sure no spaces
 
     fileID = fopen(filename , 'w');
     %write headers and format
-    fprintf(fileID,'%s%s%s%s%s%s%s%s%s%s%s%s\n',...
-    'Mass [m/z],','Formula [M],','Formula type,','Species,','CS [z],','Polarity,',...
-    'Start [min],','End [min],','(N)CE,','(N)CE type,','MSX ID,','Comment,');
+    fprintf(fileID,'%s%s%s%s%s%s%s%s%s\n',... 
+    'id,','Modified sequence,','Mass,','Charge,','Retention time,','Retention length,',...
+    'Intensity,','RealtimeCorrection,','TargetedMs2,');
 
-    for ii = 1:size(xcal,1)
-        fprintf(fileID, formatString ,xcal(ii,:),comment{ii,1});
+    for ii = 1:size(mqLive,1)
+        fprintf(fileID, formatStringMQL,id(ii),targets.sequences{ii},mqLive(ii,:));
     end
-
     fclose(fileID);
     
     % Print finished
     fprintf(['\nTargeting list successfully written to file: ',filename,'\n']);
     
-    % Print warning warning if inclusion list is oversize for xCalibur.
-    if ii >= 5001
-        fprintf(2,['WARNING: Maximum inclusion list size exceeded. Inclusion list has ',...
-            num2str(ii - 5000),' entries over the 5000 entry maximum for xCalibur.\n']);
-        fprintf(2,['While the targeting file has been created, it will not be usable ',...
-            'in xCalibur until the number of entries is reduced.\n']);
-        fprintf(2,['You should either take steps to reduce targeting list size or consider '...
-            'use of alternate targeting software e.g. MaxQuant.live\n']);
-        fprintf(2,'which permits the use of longer inclusion lists\n');
-    end
-
 end
