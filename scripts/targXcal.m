@@ -41,6 +41,7 @@ dPEP          = 1;  % Default: PEP filter set at 1 i.e. NO filter applied.
 dFilterConRev = true; % Default: removes 'Con','Rev'. Only applied to table data
 dScore        = 0;  % Default: no filter
 dIntensity    = 0;  % Default: no filter
+dRTshift      = 0;
 dInclude      = {}; % Default: no filter
 dExclude      = {}; % Default: no filter
 dUnique       = true;   % Default: if multiple entries for the same ion/z state
@@ -56,6 +57,7 @@ addParameter(p,'FilterConRev',dFilterConRev,@islogical);
 addParameter(p,'PEP'         ,dPEP,validPEP);
 addParameter(p,'Score'       ,dScore,@isnumeric); % applies a minimum score threshold
 addParameter(p,'Intensity'   ,dIntensity,@isnumeric); % applies a minimum Intensity threshold
+addParameter(p,'RTshift'     ,dRTshift,@isnumeric); % subtracts this value from all retention times
 addParameter(p,'Unique'      ,dUnique,@islogical); % Want to add several options: first, highest intensity)
 addParameter(p,'Include'     ,dInclude,@iscell); % Include only peptides matching these accessions
 addParameter(p,'Exclude'     ,dExclude,@iscell); % Exclude peptides matching these accessions. If used together
@@ -176,7 +178,7 @@ end
     targets.sequences = data.Sequences;
     targets.mass      = data.Mass         ;
     targets.z         = data.z            ;
-    targets.RT        = data.RT;
+    targets.RT        = data.RT - p.Results.RTshift; % Applies RTshift if used
     targets.int       = data.Intensity  ;
 
     % identify number of lysine residues for TMT labelling
