@@ -24,7 +24,7 @@ These functions have been tested on Windows 10, and Max OS X and Matlab versions
 % Import using readtable
   data = readtable('evidence.txt');
 ```
-The **filename** can include path details, if the user does not add .csv to the end of the filename this will be done automatically.
+The **filename** to write the targeting list to can include path details, if the user does not add .csv to the end of the filename this will be done automatically.
 
 ## Function default behavior
 The function has been written on the basis that after importing the evidence.txt file (using e.g. readtable), the user will further processed the data to select peptides of interest. However the function can apply a number of broad filters to the data depending on the parameters set. By default, the function removes peptides identified as contaminants or reverse database hits ('FilterRevCon', true). It also selects for unique peptide sequence/charge state combinations. If multiple entries for the same sequence/charge state are identified, the function selects the entry with the highest intensity ('Unique', true).
