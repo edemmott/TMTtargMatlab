@@ -118,6 +118,6 @@ MaxQuant.Live does not provide a means of directly importing the targeting data.
 
 Created: Ed Emmott, Northeastern University, Boston, MA, USA May 2019.
 
-Email: e.emmott@northeastern.edu
-WWW: http://edemmott.co.uk
+Email: e.emmott@liverpool.ac.uk
+WWW: http://emmottlab.org
 Twitter: https://twitter.com/edemmott
