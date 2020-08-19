@@ -1,10 +1,13 @@
 # TMTtargMatlab
+
+20200819 - Functions may need updating as MaxQuant no longer appears to omit the TMT mass from the peptide m/z.
+
 [Matlab](https://www.mathworks.com/products/matlab.html) functions for generating targeting/inclusion lists for tandem mass tag/TMT data for use with [Xcalibur](https://www.thermofisher.com/order/catalog/product/OPTON-30487) or [Maxquant.Live](http://maxquant.live/) from [Maxquant](https://www.maxquant.org/) evidence.txt files. 
 
 * **targXcal** : generates Xcalibur targeting lists for TMT data.
 * **targMql**  : generates MaxQuant.Live targeting lists for TMT data.
 
-**Please note:** that these functions are designed for generating targeting lists for **TMT-based** data from maxquant evidence.txt files. The mass and m/z columns in Maxquant evidence files omit the mass of the TMT reporter. These functions correct for this, but as a result are **not suitable for label-free or SILAC-based** inclusion list generation.
+**Please note:** that these functions are designed for generating targeting lists for **TMT-based** data from maxquant evidence.txt files. Unless you have searched the data with tme as a variable modification, the mass and m/z columns in Maxquant evidence files omit the mass of the TMT reporter (Note: this may have changed in MaxQuant 1.6.7.0). These functions correct for this, but as a result are **not suitable for label-free or SILAC-based** inclusion list generation.
 
 These functions have been tested on Windows 10, and Max OS X and Matlab versions R2017b and R2018a. Maxquant v1.6.0.16 was used for generating evidence.txt files. Output files were tested with Xcalibur v4.1.31.9 and Maxquant.live v1.0
 
